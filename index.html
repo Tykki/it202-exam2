@@ -43,21 +43,25 @@
   <script>
     $(document).ready(function() {
         console.log('work')
-      fetch('https://data.cityofchicago.org/resource/xzkq-xp2w.json?$select=department,count(department)&$group=department').then(res => res.json()).then(data => {
+      fetch('https://data.cityofchicago.org/resource/xzkq-xp2w.json?$select=department,count(department)&$group=department&$order=department').then(res => res.json()).then(data => {
           for (let x of data) {
             $('#list').append(`
-            <a class="collapsed list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#${x.department.replace(/\s+/g, '')}">
+            <a class="collapsed list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#${x.department.replace(/\s+&?/g, '')}">
               ${x.department}
               <span id="list-item-badge" class="badge badge-primary badge-pill">${x.count_department}</span>
             </a>
-            <div id="${x.department.replace(/\s+/g, '')}" class="collapse" data-parent="#list-container">
+            <div id="${x.department.replace(/\s+&?/g, '')}" class="collapse" data-parent="#list-container">
               <div class="card-body">
                 it works
               </div>
             </div>
             `)
+            console.log(x.department.replace(/\s+&?/g, ''))
           }
-      }).then($('.list-group.item').sort())
+      }).then(() => {
+        let test = $('.list-group-item')
+        // console.log(test)
+        })
 
     })
   </script>
